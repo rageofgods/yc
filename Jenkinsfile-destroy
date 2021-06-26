@@ -27,7 +27,7 @@ pipeline {
                         string(credentialsId: 'folder_id', variable: 'folder_id'),
                         string(credentialsId: 'ssh_key_pub', variable: 'ssh_key_pub')
                         ]) {
-                            sh 'terraform apply -destroy -auto-approve -input=false -var tfplan'
+                            sh 'terraform apply -destroy -auto-approve -input=false tfplan'
                         }
                 }
             }
