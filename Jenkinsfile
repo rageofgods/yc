@@ -4,8 +4,17 @@ pipeline {
     stages {
         stage('Terraform plan') {
             steps {
-                sh 'terraform init'
-                sh 'terraform plan -out myplan'
+                script {
+                    withCredentials([
+                        string(credentialsId: 'yc_token', variable: 'yc_token'),
+                        string(credentialsId: 'cloud_id', variable: 'cloud_id'),
+                        string(credentialsId: 'folder_id', variable: 'folder_id'),
+                        string(credentialsId: 'ssh_key_pub', variable: 'ssh_key_pub')
+                        ]) {
+                            sh 'terraform init'
+                            sh 'terraform plan -out myplan -input=false myplan -var "yc_token=${yc_token}" -var "yc_cloud_id=${cloud_id}" -var "yc_folder_id=${folder_id}" -var "ssh_key=${ssh_key_pub}"'
+                        }
+                }
             }
         }
 
@@ -17,9 +26,10 @@ pipeline {
                         string(credentialsId: 'cloud_id', variable: 'cloud_id'),
                         string(credentialsId: 'folder_id', variable: 'folder_id'),
                         string(credentialsId: 'ssh_key_pub', variable: 'ssh_key_pub')
-                        ])
+                        ]) {
+                            sh 'terraform apply -input=false myplan -var "yc_token=${yc_token}" -var "yc_cloud_id=${cloud_id}" -var "yc_folder_id=${folder_id}" -var "ssh_key=${ssh_key_pub}"'
+                        }
                 }
-                sh 'terraform apply -input=false myplan -var "yc_token=${yc_token}" -var "yc_cloud_id=${cloud_id}" -var "yc_folder_id=${folder_id}" -var "ssh_key=${ssh_key_pub}"'
             }
         }
     }
