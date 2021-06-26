@@ -1,8 +1,19 @@
+variable "s3_access_key" {}
+variable "s3_secret_key" {}
+
 terraform {
   required_providers {
     yandex = {
       source = "yandex-cloud/yandex"
     }
+  }
+  backend "s3" {
+    bucket = "terraform-state-01"
+    key    = "/terraform.tfstate"
+    endpoint = "terraform-state-01.website.yandexcloud.net"
+    access_key = "${var.s3_access_key}"
+    secret_key = "${var.s3_secret_key}"
+    region = "ru-central1-b"
   }
 }
 

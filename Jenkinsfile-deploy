@@ -10,9 +10,15 @@ pipeline {
                         string(credentialsId: 'cloud_id', variable: 'cloud_id'),
                         string(credentialsId: 'folder_id', variable: 'folder_id'),
                         string(credentialsId: 'ssh_key_pub', variable: 'ssh_key_pub')
+                        string(credentialsId: 's3_access_key', variable: 's3_access_key')
+                        string(credentialsId: 's3_secret_key', variable: 's3_secret_key')
                         ]) {
-                            sh 'terraform init -input=false'
-                            sh 'terraform plan -input=false -out=tfplan -var "yc_token=${yc_token}" -var "yc_cloud_id=${cloud_id}" -var "yc_folder_id=${folder_id}" -var "ssh_key=${ssh_key_pub}"'
+                            sh 'terraform init -no-color -input=false -var "s3_access_key=${s3_access_key}" \
+                                                            -var "s3_secret_key=${s3_secret_key}"'
+                            sh 'terraform plan -no-color -input=false -out=tfplan -var "yc_token=${yc_token}" \
+                                                                        -var "yc_cloud_id=${cloud_id}" \
+                                                                        -var "yc_folder_id=${folder_id}" \
+                                                                        -var "ssh_key=${ssh_key_pub}"'
                         }
                 }
             }
@@ -27,7 +33,7 @@ pipeline {
                         string(credentialsId: 'folder_id', variable: 'folder_id'),
                         string(credentialsId: 'ssh_key_pub', variable: 'ssh_key_pub')
                         ]) {
-                            sh 'terraform apply -input=false tfplan'
+                            sh 'terraform apply -no-color -input=false tfplan'
                         }
                 }
             }
