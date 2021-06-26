@@ -12,7 +12,7 @@ pipeline {
                         string(credentialsId: 'ssh_key_pub', variable: 'ssh_key_pub')
                         ]) {
                             sh 'terraform init -input=false'
-                            sh 'terraform plan -input=false -out=tfplan -var "yc_token=${yc_token}" -var "yc_cloud_id=${cloud_id}" -var "yc_folder_id=${folder_id}" -var "ssh_key=${ssh_key_pub}"'
+                            sh 'terraform plan -destroy -input=false -out=tfplan -var "yc_token=${yc_token}" -var "yc_cloud_id=${cloud_id}" -var "yc_folder_id=${folder_id}" -var "ssh_key=${ssh_key_pub}"'
                         }
                 }
             }
