@@ -20,7 +20,7 @@ pipeline {
                                                                         -backend-config "secret_key=${s3_secret_key}" \
                                                                         -backend-config "region=region1" \
                                                                         -backend-config "skip_region_validation=true" \
-                                                                        -backend-config "skip_requesting_account_id=true" \
+                                                                        -backend-config "skip_metadata_api_check=true" \
                                                                         -backend-config "skip_credentials_validation=true"'
 
                             sh 'terraform plan -no-color -input=false -out=tfplan -var "yc_token=${yc_token}" \
