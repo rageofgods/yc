@@ -7,21 +7,6 @@ terraform {
   backend "s3" {}
 }
 
-variable "s3_access_key" {}
-variable "s3_secret_key" {}
-
-data "terraform_remote_state" "state" {
-  backend = "s3"
-  config {
-    bucket = "terraform-state-01"
-    key    = "/terraform.tfstate"
-    endpoint = "terraform-state-01.website.yandexcloud.net"
-    access_key = "${var.s3_access_key}"
-    secret_key = "${var.s3_secret_key}"
-    region = "ru-central1-b"
-  }
-}
-
 variable "yc_token" {}
 variable "yc_cloud_id" {}
 variable "yc_folder_id" {}
