@@ -27,7 +27,7 @@ pipeline {
                         string(credentialsId: 'folder_id', variable: 'folder_id'),
                         string(credentialsId: 'ssh_key_pub', variable: 'ssh_key_pub')
                         ]) {
-                            sh 'terraform apply -input=false -var "yc_token=${yc_token}" -var "yc_cloud_id=${cloud_id}" -var "yc_folder_id=${folder_id}" -var "ssh_key=${ssh_key_pub}" tfplan'
+                            sh 'terraform apply -input=false tfplan'
                         }
                 }
             }
