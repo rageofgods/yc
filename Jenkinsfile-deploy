@@ -13,8 +13,13 @@ pipeline {
                         string(credentialsId: 's3_access_key', variable: 's3_access_key'),
                         string(credentialsId: 's3_secret_key', variable: 's3_secret_key')
                         ]) {
-                            sh 'terraform init -no-color -input=false -var "s3_access_key=${s3_access_key}" \
-                                                            -var "s3_secret_key=${s3_secret_key}"'
+                            sh 'terraform init -no-color -input=false -backend-config "bucket=terraform-state-01" \ 
+                                                                        -backend-config "key=/terraform.tfstate" \
+                                                                        -backend-config "endpoint=terraform-state-01.website.yandexcloud.net" \
+                                                                        -backend-config "access_key=${s3_access_key}" \
+                                                                        -backend-config "secret_key=${s3_secret_key}" \
+                                                                        -backend-config "region=ru-central1-b" \
+                                                                        '
                             sh 'terraform plan -no-color -input=false -out=tfplan -var "yc_token=${yc_token}" \
                                                                         -var "yc_cloud_id=${cloud_id}" \
                                                                         -var "yc_folder_id=${folder_id}" \
