@@ -15,7 +15,7 @@ pipeline {
                         ]) {
                             sh 'terraform init -no-color -input=false -backend-config "bucket=terraform-state-01" \
                                                                         -backend-config "key=terraform.tfstate" \
-                                                                        -backend-config "endpoint=terraform-state-01.website.yandexcloud.net" \
+                                                                        -backend-config "endpoint=website.yandexcloud.net" \
                                                                         -backend-config "access_key=${s3_access_key}" \
                                                                         -backend-config "secret_key=${s3_secret_key}" \
                                                                         -backend-config "region=region1" \
