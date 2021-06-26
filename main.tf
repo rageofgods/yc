@@ -1,13 +1,18 @@
-variable "s3_access_key" {}
-variable "s3_secret_key" {}
-
 terraform {
   required_providers {
     yandex = {
       source = "yandex-cloud/yandex"
     }
   }
-  backend "s3" {
+  backend "s3" {}
+}
+
+variable "s3_access_key" {}
+variable "s3_secret_key" {}
+
+data "terraform_remote_state" "state" {
+  backend = "s3"
+  config {
     bucket = "terraform-state-01"
     key    = "/terraform.tfstate"
     endpoint = "terraform-state-01.website.yandexcloud.net"
