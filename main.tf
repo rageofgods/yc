@@ -20,6 +20,7 @@ provider "yandex" {
 
 variable "ssh_key" {}
 variable "ssh_private_key" {default = "terraform.key"}
+variable "ssh_username" {default = "vm-admin"}
 
 resource "yandex_compute_instance" "vm-1" {
   name = "terraform1"
@@ -42,7 +43,7 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   metadata = {
-    user-data = "#cloud-config\nusers:\n  - name: vm-admin\n    groups: sudo\n    shell: /bin/bash\n    sudo: ['ALL=(ALL) NOPASSWD:ALL']\n    ssh-authorized-keys:\n      - ${var.ssh_key}"
+    user-data = "#cloud-config\nusers:\n  - name: ${var.ssh_username}\n    groups: sudo\n    shell: /bin/bash\n    sudo: ['ALL=(ALL) NOPASSWD:ALL']\n    ssh-authorized-keys:\n      - ${var.ssh_key}"
   }
 
   provisioner "remote-exec" {
@@ -51,7 +52,7 @@ resource "yandex_compute_instance" "vm-1" {
     connection {
       type        = "ssh"
       host        = "${self.network_interface.0.nat_ip_address}"
-      user        = "vm-admin"
+      user        = "${var.ssh_username}"
       private_key = "${file(var.ssh_private_key)}"
     }
   }
