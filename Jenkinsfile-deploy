@@ -26,6 +26,7 @@ pipeline {
                             withCredentials([file(credentialsId: 'terraform_ssh_private', variable: 'private_key')]) {
                                 writeFile file: "${terraform_key_path}", text: readFile(private_key)
                             }
+                            sh "chmod 600 ${terraform_key_path}"
                             sh 'terraform plan -no-color -input=false -out=tfplan -var "yc_token=${yc_token}" \
                                                                         -var "yc_cloud_id=${cloud_id}" \
                                                                         -var "yc_folder_id=${folder_id}" \
