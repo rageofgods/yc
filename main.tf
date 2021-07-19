@@ -42,10 +42,10 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   metadata = {
-    user-data = "#Ansible VM user\nusers:\n  - name: ansible\n    groups: sudo\n    shell: /bin/bash\n    sudo: ['ALL=(ALL) NOPASSWD:ALL']\n    ssh-authorized-keys:\n      - ${var.ssh_key}"
+    user-data = "#cloud-config\nusers:\n  - name: vm-admin\n    groups: sudo\n    shell: /bin/bash\n    sudo: ['ALL=(ALL) NOPASSWD:ALL']\n    ssh-authorized-keys:\n      - ${var.ssh_key}"
   }
 
-  /*provisioner "remote-exec" {
+  provisioner "remote-exec" {
     inline = ["uname -a"]
 
     connection {
@@ -58,7 +58,7 @@ resource "yandex_compute_instance" "vm-1" {
 
   provisioner "local-exec" {
       command = "echo 'hello'"
-  }*/
+  }
 
   //metadata = {
   //  ssh-keys = "${var.ssh_key}"
