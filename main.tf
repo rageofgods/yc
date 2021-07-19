@@ -19,6 +19,7 @@ provider "yandex" {
 }
 
 variable "ssh_key" {}
+variable "ssh_private_key" {}
 
 resource "yandex_compute_instance" "vm-1" {
   name = "terraform1"
@@ -51,7 +52,7 @@ resource "yandex_compute_instance" "vm-1" {
       type        = "ssh"
       host        = "${self.network_interface.0.nat_ip_address}"
       user        = "vm-admin"
-      private_key = "file(${var.ssh_key})"
+      private_key = "file(${var.ssh_private_key})"
     }
   }
 
