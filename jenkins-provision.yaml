@@ -5,6 +5,7 @@
     jenkins_hostname: "jenkins.example.com"
     jenkins_port: 8080
     jenkins_install_via: "yum"
+    jenkins_auth: none
     #jenkins_jobs:
     #  - "my-first-job"
     #  - "another-awesome-job"
