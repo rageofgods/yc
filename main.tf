@@ -19,6 +19,7 @@ variable "yc_vm_disk_size" {default = "20"}
 variable "yc_vm_cores" {default = "2"}
 variable "yc_vm_memory" {default = "4"}
 variable "yc_image_id" {default = "fd8g0dj6sus84bcku631"} # yc compute image list --folder-id standard-images
+variable "yc_vm_mgmt_ip" {default = "${self.network_interface.0.nat_ip_address}"} # Use network_interface.0.ip_address in YaC on-prem env
 
 provider "yandex" {
   token     = "${var.yc_token}"
@@ -58,14 +59,14 @@ resource "yandex_compute_instance" "vm-1" {
 
     connection {
       type        = "ssh"
-      host        = "${self.network_interface.0.nat_ip_address}" # Use network_interface.0.ip_address in YaC on-prem env
+      host        = "${var.yc_vm_mgmt_ip}" # Use network_interface.0.ip_address in YaC on-prem env
       user        = "${var.ssh_username}"
       private_key = "${file(var.ssh_private_key)}"
     }
   }
 
   provisioner "local-exec" {
-      command = "ansible-galaxy install --force git+https://github.com/rageofgods/ansible-jenkins.git && ansible-playbook -u ${var.ssh_username} -i '${self.network_interface.0.nat_ip_address},' --private-key ${var.ssh_private_key} --extra-vars 'jenkins_hostname=${self.network_interface.0.nat_ip_address}' jenkins-provision.yaml"
+      command = "ansible-galaxy install --force git+https://github.com/rageofgods/ansible-jenkins.git && ansible-playbook -u ${var.ssh_username} -i '${var.yc_vm_mgmt_ip},' --private-key ${var.ssh_private_key} --extra-vars 'jenkins_hostname=${self.network_interface.0.nat_ip_address}' jenkins-provision.yaml"
   }
 }
 
