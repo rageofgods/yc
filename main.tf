@@ -41,7 +41,7 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   metadata = {
-    user-data = "#cloud-config\nusers:\n  - name: user\n    groups: sudo\n    shell: /bin/bash\n    sudo: ['ALL=(ALL) NOPASSWD:ALL']\n    ssh-authorized-keys:\n      - ${var.ssh_key}"
+    user-data = "#cloud-config\nusers:\n  - name: ansible\n    groups: sudo\n    shell: /bin/bash\n    sudo: ['ALL=(ALL) NOPASSWD:ALL']\n    ssh-authorized-keys:\n      - ${var.ssh_key}"
   }
 
   //metadata = {
