@@ -11,7 +11,7 @@ variable "yc_token" {}
 variable "yc_cloud_id" {}
 variable "yc_folder_id" {}
 variable "ssh_key" {}
-variable "ssh_private_key" {default = "terraform.key"}
+variable "ssh_private_key" {default = "terraform.key"} # From jenkins pipeline
 variable "ssh_username" {default = "vm-admin"}
 variable "yc_zone" {default = "ru-central1-b"}
 variable "yc_vm_name" {default = "jenkins"}
