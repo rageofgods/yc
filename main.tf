@@ -42,7 +42,7 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   metadata = {
-    user-data = "#Ansible VM user\nusers:\n  - name: vm-admin\n    groups: sudo\n    shell: /bin/bash\n    sudo: ['ALL=(ALL) NOPASSWD:ALL']\n    ssh-authorized-keys:\n      - ${var.ssh_key}"
+    user-data = "#Ansible VM user\nusers:\n  - name: vmadmin\n    groups: sudo\n    shell: /bin/bash\n    sudo: ['ALL=(ALL) NOPASSWD:ALL']\n    ssh-authorized-keys:\n      - ${var.ssh_key}"
   }
 
   provisioner "remote-exec" {
@@ -51,7 +51,7 @@ resource "yandex_compute_instance" "vm-1" {
     connection {
       type        = "ssh"
       host        = "${self.network_interface.0.nat_ip_address}"
-      user        = "vm-admin"
+      user        = "vmadmin"
       private_key = "${file(var.ssh_private_key)}"
     }
   }
