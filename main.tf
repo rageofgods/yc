@@ -65,7 +65,7 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   provisioner "local-exec" {
-      command = "ansible-galaxy install emmetog.jenkins && ansible-playbook -i '${self.network_interface.0.nat_ip_address},' --private-key ${var.ssh_private_key} jenkins-provision.yaml"
+      command = "ansible-galaxy install emmetog.jenkins && ansible-playbook -u ${var.ssh_username} -i '${self.network_interface.0.nat_ip_address},' --private-key ${var.ssh_private_key} jenkins-provision.yaml"
   }
 }
 

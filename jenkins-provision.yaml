@@ -1,4 +1,5 @@
-- hosts: jenkins
+- hosts: all
+  become: yes
   vars:
     jenkins_version: "2.289.2"
     jenkins_hostname: "jenkins.example.com"
