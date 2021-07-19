@@ -10,36 +10,41 @@ terraform {
 variable "yc_token" {}
 variable "yc_cloud_id" {}
 variable "yc_folder_id" {}
+variable "ssh_key" {}
+variable "ssh_private_key" {default = "terraform.key"}
+variable "ssh_username" {default = "vm-admin"}
+variable "yc_zone" {default = "ru-central1-b"}
+variable "yc_vm_name" {default = "jenkins"}
+variable "yc_vm_disk_size" {default = "20"}
+variable "yc_vm_cores" {default = "2"}
+variable "yc_vm_memory" {default = "4"}
+variable "yc_image_id" {default = "fd8g0dj6sus84bcku631"} # yc compute image list --folder-id standard-images
 
 provider "yandex" {
   token     = "${var.yc_token}"
   cloud_id  = "${var.yc_cloud_id}"
   folder_id = "${var.yc_folder_id}"
-  zone      = "ru-central1-b"
+  zone      = "${var.yc_zone}"
 }
 
-variable "ssh_key" {}
-variable "ssh_private_key" {default = "terraform.key"}
-variable "ssh_username" {default = "vm-admin"}
-
 resource "yandex_compute_instance" "vm-1" {
-  name = "terraform1"
+  name = "${var.yc_vm_name}"
 
   resources {
-    cores  = 2
-    memory = 2
+    cores  = "${var.yc_vm_cores}"
+    memory = "${var.yc_vm_memory}"
   }
 
   boot_disk {
     initialize_params {
-      image_id = "fd8g0dj6sus84bcku631"
-      size     = "20"
+      image_id = "${var.yc_image_id}"
+      size     = "${var.yc_vm_disk_size}"
     }
   }
 
   network_interface {
     subnet_id = yandex_vpc_subnet.subnet-1.id
-    nat       = true
+    nat       = true # For external communications
   }
 
   metadata = {
@@ -68,7 +73,7 @@ resource "yandex_vpc_network" "network-1" {
 
 resource "yandex_vpc_subnet" "subnet-1" {
   name           = "subnet1"
-  zone           = "ru-central1-b"
+  zone           = "${var.yc_zone}"
   network_id     = yandex_vpc_network.network-1.id
   v4_cidr_blocks = ["192.168.10.0/24"]
 }
@@ -81,6 +86,6 @@ output "external_ip_address_vm_1" {
   value = yandex_compute_instance.vm-1.network_interface.0.nat_ip_address
 }
 
-output "subnet-1" {
-  value = yandex_vpc_subnet.subnet-1.id
+output "fqdn_vm_1" {
+  value = yandex_compute_instance.vm-1.fqdn
 }
