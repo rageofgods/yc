@@ -22,8 +22,8 @@ pipeline {
                                                                         -backend-config "skip_region_validation=true" \
                                                                         -backend-config "skip_metadata_api_check=true" \
                                                                         -backend-config "skip_credentials_validation=true"'
-                            withCredentials([file(credentialsId: private_key, variable: 'private_key')]) {
-                                writeFile file: '${WORKSPACE}/terraform.key', text: readFile(private_key)
+                            withCredentials([file(credentialsId: 'private_key', variable: 'private_key')]) {
+                                writeFile file: "${WORKSPACE}/terraform.key", text: readFile(private_key)
                             }
                             sh 'terraform plan -no-color -input=false -out=tfplan -var "yc_token=${yc_token}" \
                                                                         -var "yc_cloud_id=${cloud_id}" \
