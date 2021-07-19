@@ -29,6 +29,7 @@ provider "yandex" {
 
 resource "yandex_compute_instance" "vm-1" {
   name = "${var.yc_vm_name}"
+  hostname = "${var.yc_vm_name}"
 
   resources {
     cores  = "${var.yc_vm_cores}"
