@@ -41,8 +41,12 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   metadata = {
-    ssh-keys = "${var.ssh_key}"
+    user-data = "#cloud-config\nusers:\n  - name: user\n    groups: sudo\n    shell: /bin/bash\n    sudo: ['ALL=(ALL) NOPASSWD:ALL']\n    ssh-authorized-keys:\n      - ${var.ssh_key}"
   }
+
+  //metadata = {
+  //  ssh-keys = "${var.ssh_key}"
+  //}
 }
 
 resource "yandex_vpc_network" "network-1" {
