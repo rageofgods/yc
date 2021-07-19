@@ -49,6 +49,7 @@ resource "yandex_compute_instance" "vm-1" {
 
     connection {
       type        = "ssh"
+      host        = "${self.ipv4_address}"
       user        = "vm-admin"
       private_key = "${var.ssh_key}"
     }
