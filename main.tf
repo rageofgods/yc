@@ -60,10 +60,6 @@ resource "yandex_compute_instance" "vm-1" {
   provisioner "local-exec" {
       command = "echo 'hello'"
   }
-
-  //metadata = {
-  //  ssh-keys = "${var.ssh_key}"
-  //}
 }
 
 resource "yandex_vpc_network" "network-1" {
