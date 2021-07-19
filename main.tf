@@ -4,21 +4,22 @@ terraform {
       source = "yandex-cloud/yandex"
     }
   }
-  backend "s3" {}
+  backend "s3" {} # We can't define variables here ;(
 }
 
 variable "yc_token" {}
 variable "yc_cloud_id" {}
 variable "yc_folder_id" {}
-variable "ssh_key" {}
+variable "ssh_key" {} # Public ssh key for VM bootstrap with ansible
 variable "ssh_private_key" {default = "terraform.key"} # From jenkins pipeline
-variable "ssh_username" {default = "vm-admin"}
-variable "yc_zone" {default = "ru-central1-b"}
-variable "yc_vm_name" {default = "jenkins"}
-variable "yc_vm_disk_size" {default = "20"}
-variable "yc_vm_cores" {default = "2"}
-variable "yc_vm_memory" {default = "4"}
+variable "ssh_username" {default = "vm-admin"} # Username for ansible play
+variable "yc_zone" {default = "ru-central1-b"} # Default cloud region
+variable "yc_vm_name" {default = "jenkins"} # Provisioned VM name
+variable "yc_vm_disk_size" {default = "20"} # VM disk size (system partition)
+variable "yc_vm_cores" {default = "2"} # VM cpu cores count
+variable "yc_vm_memory" {default = "4"} # VM memory in GB
 variable "yc_image_id" {default = "fd8g0dj6sus84bcku631"} # yc compute image list --folder-id standard-images
+variable "anbl_plbk_name" {default = "jenkins-provision"} # which playbook we want to run after inf provision
 
 provider "yandex" {
   token     = "${var.yc_token}"
@@ -65,7 +66,7 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   provisioner "local-exec" {
-      command = "ansible-galaxy install --force git+https://github.com/rageofgods/ansible-jenkins.git && ansible-playbook -u ${self.network_interface.0.nat_ip_address} -i '${var.yc_vm_mgmt_ip},' --private-key ${var.ssh_private_key} --extra-vars 'jenkins_hostname=${self.network_interface.0.nat_ip_address}' jenkins-provision.yaml"
+      command = "ansible-galaxy install --force git+https://github.com/rageofgods/ansible-jenkins.git && ansible-playbook -u ${var.ssh_username} -i '{self.network_interface.0.nat_ip_address},' --private-key ${var.ssh_private_key} --extra-vars 'jenkins_hostname=${self.network_interface.0.nat_ip_address}' jenkins-provision.yaml"
   }
 }
 
