@@ -30,7 +30,7 @@ pipeline {
                                                                         -var "yc_cloud_id=${cloud_id}" \
                                                                         -var "yc_folder_id=${folder_id}" \
                                                                         -var "ssh_key=${ssh_key_pub}" \
-                                                                        -var "ssh_private_key=${terraform_key_path}"'
+                                                                        -var "ssh_private_key=terraform.key"'
                         }
                 }
             }
