@@ -51,7 +51,7 @@ resource "yandex_compute_instance" "vm-1" {
 
     connection {
       type        = "ssh"
-      host        = "${self.network_interface.0.nat_ip_address}"
+      host        = "${self.network_interface.0.nat_ip_address}" # Use network_interface.0.ip_address in YaC on-prem env
       user        = "${var.ssh_username}"
       private_key = "${file(var.ssh_private_key)}"
     }
