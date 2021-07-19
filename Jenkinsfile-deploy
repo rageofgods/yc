@@ -13,6 +13,7 @@ pipeline {
                         string(credentialsId: 's3_access_key', variable: 's3_access_key'),
                         string(credentialsId: 's3_secret_key', variable: 's3_secret_key')
                         ]) {
+                            def terraform_key_name = terraform.key
                             sh 'terraform init -no-color -input=false -backend-config "bucket=terraform-state-01" \
                                                                         -backend-config "key=terraform.tfstate" \
                                                                         -backend-config "endpoint=storage.yandexcloud.net" \
@@ -23,13 +24,13 @@ pipeline {
                                                                         -backend-config "skip_metadata_api_check=true" \
                                                                         -backend-config "skip_credentials_validation=true"'
                             withCredentials([file(credentialsId: 'private_key', variable: 'private_key')]) {
-                                writeFile file: "${WORKSPACE}/terraform.key", text: readFile(private_key)
+                                writeFile file: "${WORKSPACE}/${terraform_key_name}", text: readFile(private_key)
                             }
                             sh 'terraform plan -no-color -input=false -out=tfplan -var "yc_token=${yc_token}" \
                                                                         -var "yc_cloud_id=${cloud_id}" \
                                                                         -var "yc_folder_id=${folder_id}" \
                                                                         -var "ssh_key=${ssh_key_pub}" \
-                                                                        -var "ssh_private_key=${WORKSPACE}/terraform.key"'
+                                                                        -var "ssh_private_key=${terraform_key_name}"'
                         }
                 }
             }
