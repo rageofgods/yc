@@ -1,0 +1,22 @@
+- hosts: jenkins
+  vars:
+    jenkins_version: "2.289.2"
+    jenkins_hostname: "jenkins.example.com"
+    jenkins_port: 8080
+    jenkins_install_via: "yum"
+    #jenkins_jobs:
+    #  - "my-first-job"
+    #  - "another-awesome-job"
+    #jenkins_include_secrets: true
+    #jenkins_include_custom_files: true
+    #jenkins_custom_files:
+    #  - src: "jenkins.plugins.openstack.compute.UserDataConfig.xml"
+    #    dest: "jenkins.plugins.openstack.compute.UserDataConfig.xml"
+    jenkins_plugins:
+      - git
+      - blueocean
+    #jenkins_custom_plugins:
+    #  - "openstack-cloud-plugin/openstack-cloud.jpi"
+
+  roles:
+    - emmetog.jenkins
