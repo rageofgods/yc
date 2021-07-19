@@ -23,4 +23,4 @@
     #  - "openstack-cloud-plugin/openstack-cloud.jpi"
 
   roles:
-    - emmetog.jenkins
+    - ansible-jenkins
