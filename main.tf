@@ -19,7 +19,7 @@ provider "yandex" {
 }
 
 variable "ssh_key" {}
-variable "ssh_private_key" {}
+variable "ssh_private_key" {default = "terraform.key"}
 
 resource "yandex_compute_instance" "vm-1" {
   name = "terraform1"
