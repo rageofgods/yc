@@ -7,8 +7,6 @@
     jenkins_auth: none
     jenkins_config_owner: jenkins
     jenkins_config_group: jenkins
-    jenkins_plugins:
-      - git
-      - blueocean
+    jenkins_plugins_tar_url: "http://130.193.55.153/jenkins-plugins.tar"
   roles:
     - ansible-jenkins
