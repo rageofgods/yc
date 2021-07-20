@@ -1,4 +1,7 @@
 ---
+# By default we install jenkins in CentOS/RedHat environment
+jenkins_install_via: "yum"
+
 jenkins_version: "2.289.2"  # The exact version of jenkins to deploy
 
 jenkins_hostname: "127.0.0.1"  # The hostname that Jenkins will be accessible on
