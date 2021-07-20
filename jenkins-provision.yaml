@@ -8,5 +8,8 @@
     jenkins_config_owner: jenkins
     jenkins_config_group: jenkins
     jenkins_plugins_tar_url: "http://130.193.55.153/jenkins-plugins.tar"
+    jenkins_casc_enabled: true
+    jenkins_casc:
+      - "env.yaml"
   roles:
     - jenkins
