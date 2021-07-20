@@ -34,12 +34,19 @@
     line: "JENKINS_HTTPS_PORT={{ jenkins_port_https }}"
   when: jenkins_install_via != "docker"
 
-- name: Set Jenkins Java command line options
+- name: Set Jenkins Java command line options (without casc support)
   lineinfile:
     dest: "{{ jenkins_config_path }}"
     regexp: '^JENKINS_JAVA_OPTIONS='
     line: "JENKINS_JAVA_OPTIONS=\"{{ jenkins_java_opts }}\""
-  when: jenkins_install_via != "docker"
+  when: jenkins_install_via != "docker" and not jenkins_casc_enabled
+
+- name: Set Jenkins Java command line options (with casc support)
+  lineinfile:
+    dest: "{{ jenkins_config_path }}"
+    regexp: '^JENKINS_JAVA_OPTIONS='
+    line: "JENKINS_JAVA_OPTIONS=\"{{ jenkins_java_opts_casc }}\""
+  when: jenkins_install_via != "docker" and jenkins_casc_enabled
 
 - name: Ensure correct ownership of JENKINS_HOME directory
   file:
@@ -127,6 +134,8 @@
       --httpsCertificate='{{ jenkins_https_certificate_file }}'
       --httpsPrivateKey='{{ jenkins_secrets }}/{{ jenkins_https_private_key | basename }}'
   when: jenkins_https_certificate and jenkins_https_private_key
+
+- name: 
 
 #- name: Set Jenkins command line options
 #  lineinfile:

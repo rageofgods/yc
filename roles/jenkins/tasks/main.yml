@@ -36,6 +36,9 @@
 
 - include: "configure-jobs.yml"
 
+- include: "configure-cacs.yml"
+  when: jenkins_casc_enabled
+
 - include: "{{ jenkins_after_config_jobs_file }}"
   when: jenkins_after_config_jobs_file | length > 0
 

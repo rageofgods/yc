@@ -11,8 +11,17 @@ jenkins_port_https: "-1"
 jenkins_home: /data/jenkins  # The directory on the server where the Jenkins configs live
 jenkins_admin: "admin@example.com"  # The administrator email address for the server
 
+# Jenkins casc plugin configs path
+jenkins_casc_path: "{{ jenkins_home }}/casc_configs"
+
 # If you need to override any java options then do that here.
 jenkins_java_opts: "-Djenkins.install.runSetupWizard=false -Djava.awt.headless=true"
+
+# Add CasC java path
+jenkins_java_opts_casc: "{{ jenkins_java_opts }} -Dcasc.jenkins.config={{ jenkins_casc_path }}"
+
+# Jenkins casc support on\off
+jenkins_casc_enabled: false
 
 # Using correct pass to CentOS/RedHat config files
 jenkins_config_path: "/etc/sysconfig/jenkins"
@@ -24,6 +33,7 @@ jenkins_config_group: "jenkins"
 # The locations of the configuration files for jenkins
 jenkins_source_dir_configs: "{{ playbook_dir }}/jenkins-configs"
 jenkins_source_dir_jobs: "{{ jenkins_source_dir_configs }}/jobs"
+jenkins_source_dir_casc: "{{ jenkins_source_dir_configs }}/casc"
 
 # When defined, include this task file after configuring jobs. This happens
 # at the very end of the role, but before Jenkins is taken out of quiet mode.
@@ -45,6 +55,9 @@ jenkins_jobs: []
 
 # List of plugins to install in the Jenkins instance
 jenkins_plugins: []
+
+# List of jenkins casc config files
+jenkins_casc: []
 
 # How long to wait for installing plugins, in seconds. If you are seeing failures in the
 # "Wait for plugins to finish installing" task with an error message like "Timeout when

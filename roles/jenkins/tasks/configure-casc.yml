@@ -1,0 +1,21 @@
+---
+# First, make sure that Jenkins is stopped before attempting to copy any casc
+# configuration files.
+- include_tasks: "{{ jenkins_install_via }}/stop.yml"
+
+- name: Casc directory are present
+  file:
+    path: "{{ jenkins_casc_path }}"
+    state: directory
+    mode: 0777
+    owner: "{{ jenkins_config_owner }}"
+    group: "{{ jenkins_config_group }}"
+
+- name: Casc configs are present
+  copy:
+    src: "{{ jenkins_source_dir_casc }}/{{ item }}"
+    dest: "{{ jenkins_casc_path }}/{{ item }}"
+    mode: 0777
+    owner: "{{ jenkins_config_owner }}"
+    group: "{{ jenkins_config_group }}"
+  with_items: "{{ jenkins_cacs }}"
