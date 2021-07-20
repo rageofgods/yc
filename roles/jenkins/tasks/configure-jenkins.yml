@@ -135,8 +135,6 @@
       --httpsPrivateKey='{{ jenkins_secrets }}/{{ jenkins_https_private_key | basename }}'
   when: jenkins_https_certificate and jenkins_https_private_key
 
-- name: 
-
 #- name: Set Jenkins command line options
 #  lineinfile:
 #    dest: "{{ jenkins_config_path }}"
