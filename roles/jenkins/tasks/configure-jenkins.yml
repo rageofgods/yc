@@ -19,6 +19,13 @@
     line: "JENKINS_PORT={{ jenkins_port }}"
   when: jenkins_install_via != "docker"
 
+- name: Set Jenkins user name
+  lineinfile:
+    dest: "{{ jenkins_config_path }}"
+    regexp: '^JENKINS_USER='
+    line: "JENKINS_USER={{ jenkins_config_owner }}"
+  when: jenkins_config_owner is defined
+
 - name: Set Jenkins port for HTTPS
   lineinfile:
     dest: "{{ jenkins_config_path }}"
