@@ -32,12 +32,12 @@
 - include: "configure-files.yml"
   when: jenkins_include_custom_files
 
+- include: "configure-casc.yml"
+  when: jenkins_casc_enabled
+
 - include: "configure-plugins.yml"
 
 - include: "configure-jobs.yml"
-
-- include: "configure-casc.yml"
-  when: jenkins_casc_enabled
 
 - include: "{{ jenkins_after_config_jobs_file }}"
   when: jenkins_after_config_jobs_file | length > 0
