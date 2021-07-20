@@ -24,6 +24,11 @@
     remote_src: yes
   when: jenkins_plugins_tar_url is defined
 
+- name: Cleanup plugins tar bundle
+  file:
+    path: "{{ jenkins_home }}/plugins/plugins.tar"
+    state: absent
+
 - name: Custom plugins are installed
   copy:
     src: "{{ item }}"
