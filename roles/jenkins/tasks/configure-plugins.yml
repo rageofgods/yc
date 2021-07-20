@@ -28,6 +28,7 @@
   file:
     path: "{{ jenkins_home }}/plugins/plugins.tar"
     state: absent
+  when: jenkins_plugins_tar_url is defined
 
 - name: Custom plugins are installed
   copy:
