@@ -31,12 +31,12 @@ pipeline {
         string (
             name: 'TF_PUBLIC_KEY',
             defaultValue: 'terraform_ssh_pub',
-            description: 'Terraform public key for VM ansible bootstrap (Kind: Secret text)'
+            description: 'Terraform public key for VM ansible bootstrap credentials id (Kind: Secret text)'
         )
         string (
             name: 'TF_PRIVATE_KEY',
             defaultValue: 'terraform_ssh_private',
-            description: 'Terraform private key for VM ansible bootstrap (Kind: Secret file)'
+            description: 'Terraform private key for VM ansible bootstrap credentials id (Kind: Secret file)'
         )
         string (
             name: 'TF_S3_BUCKET_NAME',
