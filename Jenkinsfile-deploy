@@ -97,7 +97,10 @@ pipeline {
                                 writeFile file: "${terraform_key_path}", text: readFile(private_key)
                             }
                             sh "chmod 600 ${terraform_key_path}"
-                            sh "terraform workspace select ws-${params.VM_NAME.toLowerCase()} -no-color || terraform workspace new ws-${params.VM_NAME.toLowerCase()} -no-color"
+                            sh """
+                            terraform workspace select ws-${params.PROJECT_ID.toLowerCase()}-${params.VM_NAME.toLowerCase()} -no-color \
+                            || terraform workspace new ws-${params.PROJECT_ID.toLowerCase()}-${params.VM_NAME.toLowerCase()} -no-color
+                            """
                             sh """
                             terraform plan -no-color -input=false -out=tfplan -var 'yc_token=${yc_token}' \
                                                                         -var 'yc_cloud_id=${params.YC_CLOUD_ID}' \
