@@ -76,14 +76,16 @@ pipeline {
                         string(credentialsId: "${params.TF_S3_SECRET_KEY}", variable: 's3_secret_key')
                         ]) {
                             def terraform_key_path = "${WORKSPACE}/terraform.key"
-                            sh "terraform init -no-color -input=false -backend-config bucket=${params.TF_S3_BUCKET_NAME} \
+                            sh """
+                            terraform init -no-color -input=false -backend-config bucket=${params.TF_S3_BUCKET_NAME} \
                                                                         -backend-config key=${params.PROJECT_ID.toLowerCase()}-terraform.tfstate \
                                                                         -backend-config endpoint=${params.TF_S3_SERVER_NAME} \
                                                                         -backend-config access_key=${s3_access_key} \
                                                                         -backend-config secret_key=${s3_secret_key} \
                                                                         -backend-config region=${params.TF_S3_REGION_NAME} \
                                                                         -backend-config skip_region_validation=true \
-                                                                        -backend-config skip_credentials_validation=true"
+                                                                        -backend-config skip_credentials_validation=true
+                            """
                             withCredentials([file(credentialsId: "${params.TF_PRIVATE_KEY}", variable: 'private_key')]) {
                                 writeFile file: "${terraform_key_path}", text: readFile(private_key)
                             }
