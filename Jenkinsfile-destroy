@@ -1,33 +1,89 @@
 pipeline {
     agent any
 
+    parameters {
+        string (
+            name: 'PROJECT_ID',
+            defaultValue: 'U2000001',
+            description: 'Project id is used as unique label for terraform state',
+            trim: true
+        )
+        string (
+            name: 'VM_NAME',
+            defaultValue: 'Jenkins',
+            description: 'Name of Jenkins VM to create in the cloud',
+            trim: true
+        )
+        string (
+            name: 'YC_TOKEN',
+            defaultValue: 'yc_token',
+            description: 'YaC TOKEN credentials id (Kind: Secret text)'
+        )
+        string (
+            name: 'YC_CLOUD_ID',
+            defaultValue: 'b1gdf6kv4s705qr2np4v',
+            description: 'YaC CLOUD ID'
+        )
+        string (
+            name: 'YC_FOLDER_ID',
+            defaultValue: 'b1gtpv0rrthi49k5t9ek',
+            description: 'YaC FOLDER ID'
+        )
+        string (
+            name: 'TF_S3_BUCKET_NAME',
+            defaultValue: 'terraform-state-01',
+            description: 'S3 bucket name for terraform state backend'
+        )
+        string (
+            name: 'TF_S3_ACCESS_KEY',
+            defaultValue: 's3_access_key',
+            description: 'S3 access key for terraform state backend'
+        )
+        string (
+            name: 'TF_S3_SECRET_KEY',
+            defaultValue: 's3_secret_key',
+            description: 'S3 secret key for terraform state backend'
+        )
+        string (
+            name: 'TF_S3_SERVER_NAME',
+            defaultValue: 'storage.yandexcloud.net',
+            description: 'FQDN name or IP address of S3 server for terraform state backend'
+        )
+        string (
+            name: 'TF_S3_REGION_NAME',
+            defaultValue: 'ru-central1',
+            description: 'Region name of S3 server for terraform state backend'
+        )
+
     stages {
         stage('Terraform plan') {
             steps {
                 script {
                     withCredentials([
-                        string(credentialsId: 'yc_token', variable: 'yc_token'),
-                        string(credentialsId: 'cloud_id', variable: 'cloud_id'),
-                        string(credentialsId: 'folder_id', variable: 'folder_id'),
-                        string(credentialsId: 'terraform_ssh_pub', variable: 'ssh_key_pub'),
-                        string(credentialsId: 's3_access_key', variable: 's3_access_key'),
-                        string(credentialsId: 's3_secret_key', variable: 's3_secret_key')
+                        string(credentialsId: "${params.YC_TOKEN}", variable: 'yc_token'),
+                        string(credentialsId: "${params.TF_S3_ACCESS_KEY}", variable: 's3_access_key'),
+                        string(credentialsId: "${params.TF_S3_SECRET_KEY}", variable: 's3_secret_key')
                         ]) {
-                            sh 'terraform init -no-color -input=false -backend-config "bucket=terraform-state-01" \
-                                                                        -backend-config "key=terraform.tfstate" \
-                                                                        -backend-config "endpoint=storage.yandexcloud.net" \
-                                                                        -backend-config "access_key=${s3_access_key}" \
-                                                                        -backend-config "secret_key=${s3_secret_key}" \
-                                                                        -backend-config "region=region1" \
-                                                                        -backend-config "skip_region_validation=true" \
-                                                                        -backend-config "skip_metadata_api_check=true" \
-                                                                        -backend-config "skip_credentials_validation=true"'
-                            sh 'terraform workspace select test -no-color || terraform workspace new test -no-color'
-                            sh 'terraform plan -destroy -no-color -input=false -out=tfplan -var "yc_token=${yc_token}" \
-                                                                                            -var "yc_cloud_id=${cloud_id}" \
-                                                                                            -var "yc_folder_id=${folder_id}" \
-                                                                                            -var "ssh_key=${ssh_key_pub}" \
-                                                                                            -var "yc_vm_name=jenkins"'
+                            sh """
+                            terraform init -no-color -input=false -backend-config bucket=${params.TF_S3_BUCKET_NAME} \
+                                                                        -backend-config key=${params.PROJECT_ID.toLowerCase()}-terraform.tfstate \
+                                                                        -backend-config endpoint=${params.TF_S3_SERVER_NAME} \
+                                                                        -backend-config access_key=${s3_access_key} \
+                                                                        -backend-config secret_key=${s3_secret_key} \
+                                                                        -backend-config region=${params.TF_S3_REGION_NAME} \
+                                                                        -backend-config skip_region_validation=true \
+                                                                        -backend-config skip_credentials_validation=true
+                            """
+                            sh """
+                            terraform workspace select ws-${params.PROJECT_ID.toLowerCase()}-${params.VM_NAME.toLowerCase()} -no-color \
+                            || terraform workspace new ws-${params.PROJECT_ID.toLowerCase()}-${params.VM_NAME.toLowerCase()} -no-color
+                            """
+                            sh """
+                            terraform plan -destroy -no-color -input=false -out=tfplan -var 'yc_token=${yc_token}' \
+                                                                        -var 'yc_cloud_id=${params.YC_CLOUD_ID}' \
+                                                                        -var 'yc_folder_id=${params.YC_FOLDER_ID}' \
+                                                                        -var 'yc_vm_name=${params.VM_NAME.toLowerCase()}'
+                            """
                         }
                 }
             }
@@ -40,9 +96,12 @@ pipeline {
                         string(credentialsId: 'yc_token', variable: 'yc_token'),
                         string(credentialsId: 'cloud_id', variable: 'cloud_id'),
                         string(credentialsId: 'folder_id', variable: 'folder_id'),
-                        string(credentialsId: 'terraform_ssh_pub', variable: 'ssh_key_pub')
                         ]) {
-                            sh 'terraform destroy -no-color -input=false -auto-approve -var "yc_token=${yc_token}" -var "yc_cloud_id=${cloud_id}" -var "yc_folder_id=${folder_id}" -var "ssh_key=${ssh_key_pub}"'
+                            sh """
+                            terraform destroy -no-color -input=false -auto-approve -var "yc_token=${yc_token}" \
+                                                                                    -var "yc_cloud_id=${cloud_id}" \
+                                                                                    -var "yc_folder_id=${folder_id}"
+                            """
                         }
                 }
             }

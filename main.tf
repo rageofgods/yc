@@ -10,8 +10,8 @@ terraform {
 variable "yc_token" {} # YaC auth token
 variable "yc_cloud_id" {} # YaC target cloud id
 variable "yc_folder_id" {} # YaC target folder id
-variable "ssh_key" {} # Public ssh key for VM bootstrap with ansible
-variable "ssh_user_key" {} # Publical part of the SSH keypair for end-user VM access after succesfull creation
+variable "ssh_key" {defdefault = ""} # Public ssh key for VM bootstrap with ansible
+variable "ssh_user_key" {default = ""} # Publical part of the SSH keypair for end-user VM access after succesfull creation
 variable "ssh_private_key" {default = "terraform.key"} # From jenkins pipeline
 variable "ssh_username" {default = "vm-admin"} # Username for ansible play
 variable "yc_zone" {default = "ru-central1-b"} # Default cloud region
