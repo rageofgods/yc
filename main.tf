@@ -4,12 +4,12 @@ terraform {
       source = "yandex-cloud/yandex"
     }
   }
-  backend "s3" {} # We can't define variables here ;(
+  backend "s3" {} # We can't define variables here ;( So, it'll populated through parent jenkins job
 }
 
-variable "yc_token" {}
-variable "yc_cloud_id" {}
-variable "yc_folder_id" {}
+variable "yc_token" {} # YaC auth token
+variable "yc_cloud_id" {} # YaC target cloud id
+variable "yc_folder_id" {} # YaC target folder id
 variable "ssh_key" {} # Public ssh key for VM bootstrap with ansible
 variable "ssh_private_key" {default = "terraform.key"} # From jenkins pipeline
 variable "ssh_username" {default = "vm-admin"} # Username for ansible play
@@ -29,6 +29,7 @@ provider "yandex" {
   zone      = "${var.yc_zone}"
 }
 
+# Get YaC default subnet for target region
 data "yandex_vpc_subnet" "subnet" {
   name = "default-${var.yc_zone}"
 }
