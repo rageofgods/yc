@@ -71,8 +71,6 @@ pipeline {
                 script {
                     withCredentials([
                         string(credentialsId: "${params.YC_TOKEN}", variable: 'yc_token'),
-                        string(credentialsId: "${params.YC_CLOUD_ID}", variable: 'cloud_id'),
-                        string(credentialsId: "${params.YC_FOLDER_ID}", variable: 'folder_id'),
                         string(credentialsId: "${params.TF_PUBLIC_KEY}", variable: 'ssh_key_pub'),
                         string(credentialsId: "${params.TF_S3_ACCESS_KEY}", variable: 's3_access_key'),
                         string(credentialsId: "${params.TF_S3_SECRET_KEY}", variable: 's3_secret_key')
@@ -92,8 +90,8 @@ pipeline {
                             sh "chmod 600 ${terraform_key_path}"
                             sh "terraform workspace select ws-${params.VM_NAME}.toLowerCase() -no-color || terraform workspace new ws-${params.VM_NAME}.toLowerCase() -no-color"
                             sh 'terraform plan -no-color -input=false -out=tfplan -var "yc_token=${yc_token}" \
-                                                                        -var "yc_cloud_id=${cloud_id}" \
-                                                                        -var "yc_folder_id=${folder_id}" \
+                                                                        -var "yc_cloud_id=${params.YC_CLOUD_ID}" \
+                                                                        -var "yc_folder_id=${params.YC_FOLDER_ID}" \
                                                                         -var "ssh_key=${ssh_key_pub}" \
                                                                         -var "yc_vm_name=${params.VM_NAME}.toLowerCase()"'
                         }
