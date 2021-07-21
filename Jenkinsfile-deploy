@@ -26,11 +26,12 @@ pipeline {
                                 writeFile file: "${terraform_key_path}", text: readFile(private_key)
                             }
                             sh "chmod 600 ${terraform_key_path}"
-                            sh 'terraform workspace select test -no-color || terraform workspace new test -no-color'
+                            sh 'terraform workspace select test2 -no-color || terraform workspace new test2 -no-color'
                             sh 'terraform plan -no-color -input=false -out=tfplan -var "yc_token=${yc_token}" \
                                                                         -var "yc_cloud_id=${cloud_id}" \
                                                                         -var "yc_folder_id=${folder_id}" \
-                                                                        -var "ssh_key=${ssh_key_pub}"'
+                                                                        -var "ssh_key=${ssh_key_pub}" \
+                                                                        -var "yc_vm_name=jenkins02"'
                         }
                 }
             }
