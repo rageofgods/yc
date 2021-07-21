@@ -19,9 +19,8 @@ pipeline {
                                                                         -backend-config "endpoint=storage.yandexcloud.net" \
                                                                         -backend-config "access_key=${s3_access_key}" \
                                                                         -backend-config "secret_key=${s3_secret_key}" \
-                                                                        -backend-config "region=region1" \
+                                                                        -backend-config "region=ru-central1" \
                                                                         -backend-config "skip_region_validation=true" \
-                                                                        -backend-config "skip_metadata_api_check=true" \
                                                                         -backend-config "skip_credentials_validation=true"'
                             withCredentials([file(credentialsId: 'terraform_ssh_private', variable: 'private_key')]) {
                                 writeFile file: "${terraform_key_path}", text: readFile(private_key)
