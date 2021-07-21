@@ -30,7 +30,7 @@ provider "yandex" {
 }
 
 data "yandex_vpc_subnet" "subnet" {
-  subnet_id = "default.default-${var.yc_zone}"
+  name = "default.default-${var.yc_zone}"
 }
 
 resource "yandex_compute_instance" "vm-1" {
@@ -53,7 +53,7 @@ resource "yandex_compute_instance" "vm-1" {
 
   network_interface {
     //subnet_id = yandex_vpc_subnet.subnet-1.id
-    subnet_id = yandex_vpc_subnet.subnet.id
+    subnet_id = data.yandex_vpc_subnet.subnet.id
     nat       = true # Auto create external ip (with nat rule pointing to internal VM ip address
   }
 
