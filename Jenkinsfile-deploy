@@ -72,6 +72,13 @@ pipeline {
 
     }
 
+    post {
+        cleanup {
+            /* clean up our workspace */
+            cleanWs()
+        }
+    }
+
     stages {
         stage('Terraform plan') {
             steps {
