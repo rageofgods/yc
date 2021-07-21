@@ -70,7 +70,7 @@ pipeline {
             }
         }
 
-        stage('Terraform plan') {
+        stage('Terraform destroy-plan generating') {
             steps {
                 script {
                     withCredentials([
@@ -104,7 +104,7 @@ pipeline {
             }
         }
 
-        stage('Destroy yc infra') {
+        stage('Destroy planed resources') {
             steps {
                 script {
                     withCredentials([

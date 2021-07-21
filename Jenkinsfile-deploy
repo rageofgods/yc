@@ -86,7 +86,7 @@ pipeline {
             }
         }
 
-        stage('Terraform plan') {
+        stage('Terraform create-plan generating') {
             steps {
                 script {
                     withCredentials([
@@ -128,7 +128,7 @@ pipeline {
             }
         }
 
-        stage('Deploy yc infra') {
+        stage('Create planed resources') {
             steps {
                 script {
                     sh 'terraform apply -no-color -input=false tfplan'
