@@ -79,6 +79,8 @@ pipeline {
         }
     }
 
+    options { timestamps () }
+
     stages {
         stage('Terraform plan') {
             steps {
