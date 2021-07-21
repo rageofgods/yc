@@ -65,9 +65,7 @@ pipeline {
     stages {
         stage("Set build name") {
             steps {
-                script {
-                    buildName "${params.BUILD_NUMBER}-${params.VM_NAME}-${params.YC_FOLDER_ID}"
-                }
+                buildName "${BUILD_NUMBER}-${params.VM_NAME}-${params.YC_FOLDER_ID}"
                 buildDescription "Destroing Jenkins node with name: ${params.VM_NAME} @ Folder id: ${params.YC_FOLDER_ID}"
             }
         }
