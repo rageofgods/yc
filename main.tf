@@ -30,7 +30,7 @@ provider "yandex" {
 }
 
 data "yandex_vpc_subnet" "subnet" {
-  name = "default.default-${var.yc_zone}"
+  name = "default-${var.yc_zone}"
 }
 
 resource "yandex_compute_instance" "vm-1" {
