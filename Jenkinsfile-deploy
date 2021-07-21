@@ -5,12 +5,19 @@ pipeline {
         string (
             name: 'PROJECT_ID',
             defaultValue: 'U2000001',
-            description: 'Project id is used as unique label for terraform state'
+            description: 'Project id is used as unique label for terraform state',
+            trim: true
         )
         string (
             name: 'VM_NAME',
             defaultValue: 'Jenkins',
-            description: 'Name of Jenkins VM to create in the cloud'
+            description: 'Name of Jenkins VM to create in the cloud',
+            trim: true
+        )
+        string (
+            name: 'USER_VM_SSH_PUB_KEY',
+            defaultValue: '',
+            description: 'Publical part of the SSH keypair for end-user VM access after succesfull creation'
         )
         string (
             name: 'YC_TOKEN',
@@ -30,12 +37,12 @@ pipeline {
         string (
             name: 'TF_PUBLIC_KEY',
             defaultValue: 'terraform_ssh_pub',
-            description: 'Terraform public key for VM bootstrap (Kind: Secret text)'
+            description: 'Terraform public key for VM ansible bootstrap (Kind: Secret text)'
         )
         string (
             name: 'TF_PRIVATE_KEY',
             defaultValue: 'terraform_ssh_private',
-            description: 'Terraform private key for VM bootstrap (Kind: Secret file)'
+            description: 'Terraform private key for VM ansible bootstrap (Kind: Secret file)'
         )
         string (
             name: 'TF_S3_BUCKET_NAME',
