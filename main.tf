@@ -11,6 +11,7 @@ variable "yc_token" {} # YaC auth token
 variable "yc_cloud_id" {} # YaC target cloud id
 variable "yc_folder_id" {} # YaC target folder id
 variable "ssh_key" {} # Public ssh key for VM bootstrap with ansible
+variable "ssh_user_key" {} # Publical part of the SSH keypair for end-user VM access after succesfull creation
 variable "ssh_private_key" {default = "terraform.key"} # From jenkins pipeline
 variable "ssh_username" {default = "vm-admin"} # Username for ansible play
 variable "yc_zone" {default = "ru-central1-b"} # Default cloud region
@@ -59,7 +60,7 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   metadata = {
-    user-data = "#cloud-config\nusers:\n  - name: ${var.ssh_username}\n    groups: sudo\n    shell: /bin/bash\n    sudo: ['ALL=(ALL) NOPASSWD:ALL']\n    ssh-authorized-keys:\n      - ${var.ssh_key}"
+    user-data = "#cloud-config\nusers:\n  - name: ${var.ssh_username}\n    groups: sudo\n    shell: /bin/bash\n    sudo: ['ALL=(ALL) NOPASSWD:ALL']\n    ssh-authorized-keys:\n      - ${var.ssh_key}\n      - ${var.ssh_user_key}"
   }
 
   /*provisioner "remote-exec" {

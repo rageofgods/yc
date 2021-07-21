@@ -103,7 +103,8 @@ pipeline {
                                                                         -var 'yc_cloud_id=${params.YC_CLOUD_ID}' \
                                                                         -var 'yc_folder_id=${params.YC_FOLDER_ID}' \
                                                                         -var 'ssh_key=${ssh_key_pub}' \
-                                                                        -var 'yc_vm_name=${params.VM_NAME.toLowerCase()}'
+                                                                        -var 'yc_vm_name=${params.VM_NAME.toLowerCase()}' \
+                                                                        -var 'ssh_user_key=${params.USER_VM_SSH_PUB_KEY}'
                             """
                         }
                 }
