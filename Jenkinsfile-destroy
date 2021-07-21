@@ -54,6 +54,7 @@ pipeline {
             defaultValue: 'ru-central1',
             description: 'Region name of S3 server for terraform state backend'
         )
+    }
 
     stages {
         stage('Terraform plan') {
@@ -85,7 +86,6 @@ pipeline {
                                                                         -var 'yc_vm_name=${params.VM_NAME.toLowerCase()}'
                             """
                         }
-                    }
                 }
             }
         }
