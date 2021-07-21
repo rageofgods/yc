@@ -74,7 +74,7 @@ pipeline {
                         string(credentialsId: "${params.YC_CLOUD_ID}", variable: 'cloud_id'),
                         string(credentialsId: "${params.YC_FOLDER_ID}", variable: 'folder_id'),
                         string(credentialsId: "${params.TF_PUBLIC_KEY}", variable: 'ssh_key_pub'),
-                        string(credentialsId: "${params.TF_S3_ACCESS_KEY}" variable: 's3_access_key'),
+                        string(credentialsId: "${params.TF_S3_ACCESS_KEY}", variable: 's3_access_key'),
                         string(credentialsId: "${params.TF_S3_SECRET_KEY}", variable: 's3_secret_key')
                         ]) {
                             def terraform_key_path = "${WORKSPACE}/terraform.key"
