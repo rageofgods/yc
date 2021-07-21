@@ -26,7 +26,7 @@ pipeline {
                                 writeFile file: "${terraform_key_path}", text: readFile(private_key)
                             }
                             sh "chmod 600 ${terraform_key_path}"
-                            sh 'terraform workspace select test || terraform workspace new test'
+                            sh 'terraform -no-color workspace select test || terraform -no-color workspace new test'
                             sh 'terraform plan -no-color -input=false -out=tfplan -var "yc_token=${yc_token}" \
                                                                         -var "yc_cloud_id=${cloud_id}" \
                                                                         -var "yc_folder_id=${folder_id}" \
