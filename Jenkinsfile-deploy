@@ -92,11 +92,11 @@ pipeline {
                             sh "chmod 600 ${terraform_key_path}"
                             sh "terraform workspace select ws-${params.VM_NAME.toLowerCase()} -no-color || terraform workspace new ws-${params.VM_NAME.toLowerCase()} -no-color"
                             sh """
-                            terraform plan -no-color -input=false -out=tfplan -var yc_token=${yc_token} \
-                                                                        -var yc_cloud_id=${params.YC_CLOUD_ID} \
-                                                                        -var yc_folder_id=${params.YC_FOLDER_ID} \
-                                                                        -var ssh_key=${ssh_key_pub} \
-                                                                        -var yc_vm_name=${params.VM_NAME.toLowerCase()}
+                            terraform plan -no-color -input=false -out=tfplan -var 'yc_token=${yc_token}' \
+                                                                        -var 'yc_cloud_id=${params.YC_CLOUD_ID}' \
+                                                                        -var 'yc_folder_id=${params.YC_FOLDER_ID}' \
+                                                                        -var 'ssh_key=${ssh_key_pub}' \
+                                                                        -var 'yc_vm_name=${params.VM_NAME.toLowerCase()}'
                             """
                         }
                 }
