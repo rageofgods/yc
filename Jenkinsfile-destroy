@@ -77,8 +77,8 @@ pipeline {
                                                                         -backend-config skip_credentials_validation=true
                             """
                             sh """
-                            terraform workspace select ws-${params.PROJECT_ID.toLowerCase()}-${params.VM_NAME.toLowerCase()} -no-color \
-                            || terraform workspace new ws-${params.PROJECT_ID.toLowerCase()}-${params.VM_NAME.toLowerCase()} -no-color
+                            terraform workspace select ws-${params.VM_NAME.toLowerCase()} -no-color \
+                            || terraform workspace new ws-${params.VM_NAME.toLowerCase()} -no-color
                             """
                             sh """
                             terraform plan -destroy -no-color -input=false -out=tfplan -var 'yc_token=${yc_token}' \
