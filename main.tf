@@ -63,7 +63,7 @@ resource "yandex_compute_instance" "vm-1" {
     user-data = "#cloud-config\nusers:\n  - name: ${var.ssh_username}\n    groups: sudo\n    shell: /bin/bash\n    sudo: ['ALL=(ALL) NOPASSWD:ALL']\n    ssh-authorized-keys:\n      - ${var.ssh_key}\n      - ${var.ssh_user_key}"
   }
 
-  /*provisioner "remote-exec" {
+  provisioner "remote-exec" {
     inline = ["uname -a"]
 
     connection {
@@ -76,7 +76,7 @@ resource "yandex_compute_instance" "vm-1" {
 
   provisioner "local-exec" {
       command = "ansible-playbook -u ${var.ssh_username} -i '${self.network_interface.0.nat_ip_address},' --private-key ${var.ssh_private_key} --extra-vars 'jenkins_hostname=${self.network_interface.0.nat_ip_address}' jenkins-provision.yaml"
-  }*/
+  }
 }
 
 /*resource "yandex_vpc_network" "network-1" {
