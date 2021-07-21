@@ -48,7 +48,8 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.subnet-1.id
+    //subnet_id = yandex_vpc_subnet.subnet-1.id
+    subnet_id = "default.default-${var.yc_zone}.id"
     nat       = true # Auto create external ip (with nat rule pointing to internal VM ip address
   }
 
@@ -72,7 +73,7 @@ resource "yandex_compute_instance" "vm-1" {
   }*/
 }
 
-resource "yandex_vpc_network" "network-1" {
+/*resource "yandex_vpc_network" "network-1" {
   name = "network1"
 }
 
@@ -81,7 +82,7 @@ resource "yandex_vpc_subnet" "subnet-1" {
   zone           = "${var.yc_zone}"
   network_id     = yandex_vpc_network.network-1.id
   v4_cidr_blocks = ["192.168.10.0/24"]
-}
+}*/
 
 output "internal_ip_address_vm_1" {
   value = yandex_compute_instance.vm-1.network_interface.0.ip_address
