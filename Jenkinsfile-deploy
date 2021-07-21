@@ -77,7 +77,7 @@ pipeline {
                         ]) {
                             def terraform_key_path = "${WORKSPACE}/terraform.key"
                             sh "terraform init -no-color -input=false -backend-config bucket=${params.TF_S3_BUCKET_NAME} \
-                                                                        -backend-config key=${params.PROJECT_ID}.toLowerCase()-terraform.tfstate \
+                                                                        -backend-config key=${params.PROJECT_ID.toLowerCase()}-terraform.tfstate \
                                                                         -backend-config endpoint=${params.TF_S3_SERVER_NAME} \
                                                                         -backend-config access_key=${s3_access_key} \
                                                                         -backend-config secret_key=${s3_secret_key} \
@@ -88,12 +88,12 @@ pipeline {
                                 writeFile file: "${terraform_key_path}", text: readFile(private_key)
                             }
                             sh "chmod 600 ${terraform_key_path}"
-                            sh "terraform workspace select ws-${params.VM_NAME}.toLowerCase() -no-color || terraform workspace new ws-${params.VM_NAME}.toLowerCase() -no-color"
-                            sh 'terraform plan -no-color -input=false -out=tfplan -var "yc_token=${yc_token}" \
-                                                                        -var "yc_cloud_id=${params.YC_CLOUD_ID}" \
-                                                                        -var "yc_folder_id=${params.YC_FOLDER_ID}" \
-                                                                        -var "ssh_key=${ssh_key_pub}" \
-                                                                        -var "yc_vm_name=${params.VM_NAME}.toLowerCase()"'
+                            sh "terraform workspace select ws-${params.VM_NAME.toLowerCase()} -no-color || terraform workspace new ws-${params.VM_NAME}.toLowerCase() -no-color"
+                            sh "terraform plan -no-color -input=false -out=tfplan -var yc_token=${yc_token} \
+                                                                        -var yc_cloud_id=${params.YC_CLOUD_ID} \
+                                                                        -var yc_folder_id=${params.YC_FOLDER_ID} \
+                                                                        -var ssh_key=${ssh_key_pub} \
+                                                                        -var yc_vm_name=${params.VM_NAME.toLowerCase()}"
                         }
                 }
             }
