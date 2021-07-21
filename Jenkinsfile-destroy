@@ -22,12 +22,12 @@ pipeline {
                                                                         -backend-config "skip_region_validation=true" \
                                                                         -backend-config "skip_metadata_api_check=true" \
                                                                         -backend-config "skip_credentials_validation=true"'
-                            sh 'terraform workspace select test2 -no-color || terraform workspace new test2 -no-color'
+                            sh 'terraform workspace select test -no-color || terraform workspace new test -no-color'
                             sh 'terraform plan -destroy -no-color -input=false -out=tfplan -var "yc_token=${yc_token}" \
                                                                                             -var "yc_cloud_id=${cloud_id}" \
                                                                                             -var "yc_folder_id=${folder_id}" \
                                                                                             -var "ssh_key=${ssh_key_pub}" \
-                                                                                            -var "yc_vm_name=jenkins02"'
+                                                                                            -var "yc_vm_name=jenkins"'
                         }
                 }
             }
