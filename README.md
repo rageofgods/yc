@@ -18,8 +18,8 @@ Configure two jenkins pipelines targeting this repo through git scm.
 First pipeline should use "Jenkinsfile-deploy" as a target jenkins file.
 Second pipeline should use "Jenkinsfile-destroy" as a target jenkins file.
 
-Run each pipeline for a very first time to populate all the downstream parameter.
-When us it a normal run.
+Run each pipeline for a very first time to populate all the downstream parameters.
+When run it as a normal run.
 
 Ansible Role Variables
 --------------
