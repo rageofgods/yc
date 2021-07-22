@@ -21,6 +21,7 @@
   yum:
     name: "java"
     state: "present"
+    disable_gpg_check: yes
   with_items:
     - java
     - git
