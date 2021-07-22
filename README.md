@@ -6,10 +6,10 @@ Create VM @ YaC, installs and completely configures Jenkins using terraform and 
 Requirements
 ------------
 
-Yandex Cloud account
-Jenkins
-Terraform
-Ansible
+- Yandex Cloud account
+- Jenkins
+- Terraform
+- Ansible
 
 Installation
 ------------
@@ -56,6 +56,10 @@ in Jenkins:
   file must exist under `jenkins_source_dir_jobs/<job_name>`
 - `jenkins_plugins`: List of plugin IDs to install on Jenkins.
 - `jenkins_custom_plugins`: List of custom plugins to install on Jenkins.
+- `jenkins_plugins_tar_url`: HTTP(s) url for jenkins plugins TAR bundle archive
+- `jenkins_casc_enabled`: Enable Configure as a code plugin support
+- `jenkins_casc`: List of casc yml files to configure jenkins instance through bootstrap proccess.
+   files must be placed under `jenkins-configs\casc\<casc.yml>`
 
 For a complete list of variables, see [`defaults/main.yml`](defaults/main.yml).
 
