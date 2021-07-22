@@ -1,4 +1,4 @@
-Create Jenkins master VM @ Yandex Cloud enironment
+Create Jenkins master VM @ Yandex Cloud environment
 ========================
 
 Create VM @ YaC, installs and completely configures Jenkins using terraform and ansible throught Jenkins pipelines.
